@@ -1,0 +1,233 @@
+CREATE SCHEMA `moviedatabase` ;
+
+
+
+# Creating Table
+CREATE TABLE `moviedatabase`.`movie_table` (
+  `movie_ID` INT NOT NULL,
+  `movie_Name` VARCHAR(45) NOT NULL,
+  `movie_Actor` VARCHAR(45) NOT NULL,
+  `movie_Actress` VARCHAR(45) NOT NULL,
+  `movie_Director` VARCHAR(45) NOT NULL,
+  `movie_Year` VARCHAR(45) NOT NULL,
+  PRIMARY KEY(`movie_ID`));
+  
+  
+  
+# Here is the insert command to insert the data.
+
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('1', 'Shang-Chi and The Legend of The Ten Rings', 'Simu Liu', 'Awkwafina', 'Destin Daniel Cretton', '2021');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('2', 'Thor', 'Chris Hemsworth', 'Tessa', 'Taika Waititi', '2017');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('3', 'RRR', 'NTR', 'Alia Bhatt', 'Raja Mouli', '2022');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('4', 'Saaho', 'Prabhas', 'Shradhha', 'Sujeeth', '2019');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('5', 'Dhoom 3', 'Aaamir Khan', 'Katrina', 'Vijay', '2013');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('6', 'PK', 'Aamir Khan', 'Anushka Sharma', 'Rajkumar', '2014');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('7', 'Singam 3', 'Suriya', 'Anushka', 'Hari', '2017');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('8', 'KGF', 'SYash', 'Shrinidhi', 'Prashanth', '2018');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('9', 'The Marine', 'John Sena', 'Kelly Carison', 'John Bonito', '2006');
+INSERT INTO `moviedatabase`.`movie_table` (`movie_ID`, `movie_Name`, `movie_Actor`, `movie_Actress`, `movie_Director`, `movie_Year`) VALUES ('10', 'F9', 'Vin Diesel', 'Jordana', 'Justin lIN', '2021');
+
+
+# Here is the select command to retrive the data from the table.
+
+SELECT * FROM moviedatabase.movie_table;
+SELECT * FROM moviedatabase.movie_table WHERE movie_Actor="NTR"
+SELECT * FROM moviedatabase.movie_table WHERE movie_Year="2022"
+SELECT * FROM moviedatabase.movie_table WHERE movie_Director="Raja Mouli"
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+This is a sample code to connect to the database using JAVA Language.
+
+
+
+package net.sqlitetutorial;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Connect {
+    public static void connect() {
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:C:/sqlite/sqlitedb/chinook.db";
+            conn = DriverManager.getConnection(url);
+            
+            System.out.println("Connection to SQLite has been established successfully.");
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+    public static void main(String[] args) {
+        connect();
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+This is the code to create a new SQLite Database:-
+
+public class Main {
+
+    public static void createNewDatabase(String fName) {
+
+        String url = "jdbc:sqlite:C:/sqlite/sqlitedb/" + fName;
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                System.out.println("A new database has been created.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void main(String[] args) {
+        createNewDatabase("moviedatabase.db");
+    }
+}
+
+    
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+ 
+ 
+ Here is the code to create a new table:-
+ 
+ 
+ public class Main {
+
+    public static void createNewTable() {
+        String url = "jdbc:sqlite:C://sqlite/sqlitedb/moviedatabase.db";
+       
+        String sql = "CREATE TABLE IF NOT EXISTS movie_table (\n"
+                + "	movie_ID integer PRIMARY KEY,\n"
+                + "	movie_Name text NOT NULL,\n"
+                + " movie_Actor text NOT NULL,\n"
+                + " movie_Actress text NOT NULL,\n"
+                + " movie_Director text NOT NULL,\n"
+                + " movie_Year text NOT NULL,\n"
+                + ");";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        createNewTable();
+    }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  This is the code to Insert the raw data in to movie_table:-
+  
+  
+  public class InsertApp {
+
+    private Connection connect() {
+        String url = "jdbc:sqlite:C://sqlite/sqlitedb/moviedatabase.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
+
+    public void insert(String movieName, String actorName, String actressName, String directorName, String year_of_release) {
+        String sql = "INSERT INTO movies_table(movie_Name,movie_Actor,movie_Actress,movie_Director,movie_Year) VALUES(?,?,?,?,?)";
+
+        try (Connection conn = this.connect();
+                PreparedStatement cv = conn.prepareStatement(sql)) {
+                
+            cv.setString(1, movieName);
+            cv.setString(2, actorName);
+            cv.setString(3, actressName);
+            cv.setString(4, directorName);
+            cv.setString(5, year_of_release);
+            cv.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+
+        InsertApp app = new InsertApp();
+      
+        app.insert('Shang-Chi and The Legend of The Ten Rings', 'Simu Liu', 'Awkwafina', 'Destin Daniel Cretton', '2021');
+        app.insert('Thor', 'Chris Hemsworth', 'Tessa', 'Taika Waititi', '2017');
+        app.insert('RRR', 'NTR', 'Alia Bhatt', 'Raja Mouli', '2022');
+        app.insert('Saaho', 'Prabhas', 'Shradhha', 'Sujeeth', '2019');
+        app.insert('Dhoom 3', 'Aaamir Khan', 'Katrina', 'Vijay', '2013');
+        app.insert('PK', 'Aamir Khan', 'Anushka Sharma', 'Rajkumar', '2014');
+    }
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+public class main {
+
+public void selectAll(){
+        String sql = "SELECT movie_ID, movie_Name, movie_Actor, movie_Actress, movie_Director, movie_Year FROM movie_table";
+        
+        try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            while (rs.next()) {
+                System.out.println(rs.getInt("movie_ID") +  "\t" + 
+                                   rs.getString("movie_Name") + "\t" +
+                                   rs.getString("movie_Actor") + "\t" +
+                                   rs.getString("movie_Actress") + "\t" +
+                                   rs.getString("movie_Director") + "\t" +
+                                   rs.getString("movie_Year"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+ 
+  public static void main(String[] args) {
+        createNewTable();
+    }
+ }
+ 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
